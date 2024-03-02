@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import subprocess
+import getpass
 import traceback
 import os
 import sys
@@ -24,7 +25,7 @@ def index():
     return render_template('index.html')
 
 # Route to handle form submission
-@app.route('/', methods=['POST'])
+@app.route('/mount', methods=['POST'])
 def mount_volume():
     # Retrieve password, hidden password, and selected device from the form
     password = request.form.get('password')
@@ -34,10 +35,12 @@ def mount_volume():
     # Define mount points and devices based on the selected option
     if selected_device == 'onion':
         device = '/dev/sda5'
-        mount_point = '/media/sherl0ck/onion'
+        user=getpass.getuser()
+        mount_point = f'/media/{user}/onion'
     elif selected_device == 'backups':
         device = '/dev/sdb1'
-        mount_point = '/media/sherl0ck/backups'
+        user=getpass.getuser()
+        mount_point = f'/media/{user}/backups'
     else:
         return jsonify({'status': 'error', 'message': 'Invalid device selected'})
 
@@ -55,7 +58,9 @@ def mount_volume():
         # Get the full error message including the traceback
         traceback_message = traceback.format_exc()
         # Write the error message to the log file
-        with open('./mount.log', 'w') as f:
+        user = getpass.getuser()
+        log_path = f'/home/{user}/tools/scripts/mount/mount_fail.log'
+        with open(log_path, 'w') as f:
             f.write(traceback_message)
         return jsonify({'status': 'error', 'message': f'Failed to mount volume. Check logs for more information.'})
 
