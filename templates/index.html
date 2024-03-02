@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeraCrypt Volume Mounter</title>
+</head>
+<body>
+    <h1>VeraCrypt Volume Mounter</h1>
+    <form id="mount-form">
+        <label for="device">Select Device:</label>
+        <select id="device" name="device">
+            <option value="onion">Onion</option>
+            <option value="backups">Backups</option>
+            <!-- Add more options as needed -->
+        </select>
+        <br><br>
+        <label for="password">Enter Password:</label>
+        <input type="password" id="password" name="password" required>
+        <br><br>
+        <label for="hidden-password">Enter Hidden Volume Password (if applicable):</label>
+        <input type="password" id="hidden-password" name="hidden-password">
+        <button type="submit">Mount Volume</button>
+    </form>
+    <div id="message"></div>
+
+    <script>
+        document.getElementById('mount-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var formData = new FormData(event.target);
+
+            fetch('/mount', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('message').textContent = data.message;
+                if (data.status === 'success') {
+                    document.getElementById('password').value = ''; // Clear password field on success
+                    document.getElementById('hidden-password').value = ''; // Clear hidden password field on success
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('message').textContent = 'Failed to mount volume.';
+            });
+        });
+    </script>
+</body>
+</html>
