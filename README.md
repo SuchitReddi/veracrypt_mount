@@ -15,4 +15,7 @@ In case of errors, they will be written to mount_fail.log.
 Now, this script only runs this service on local network. So, if you're out of that network, you can't decrypt the drives.  
 To solve this I used ngrok. Check out how to host a website using ngork in my notes [here](https://suchitreddi.github.io/Work/self_site.html).  
 I provided sample ngrok files in this repository. These should be enough for you to access the page from the open internet and decrypt your drives remotely.  
+To check if the script is running, and run it if it isn't, we add this following line at the end of "crontab -e"  
+`* * * * * /usr/bin/python3 /path/to/veracrypt_mount.py`  
+
 Contact me at [suchit20016+veremou@gmail.com](mailto:suchit20016+veremou@gmail.com) if you have any queries or concerns regarding the script.
