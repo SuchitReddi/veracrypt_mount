@@ -1,0 +1,10 @@
+authtoken: auth_token_from_ngrok_site
+version: 2
+tunnels:
+  mount:
+    proto: http
+    addr: 5045
+    domain: custom-domain.ngrok-free.app
+    basic_auth:
+      - user:pass
+      - user2:pass2

@@ -1,0 +1,7 @@
+[Unit]
+Description=ngrok
+After=network.target
+[Service]
+ExecStart=/usr/local/bin/ngrok start --config=/home/username/.config/ngrok/ngrok.yml --all
+[Install]
+WantedBy=multi-user.target
